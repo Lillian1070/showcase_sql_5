@@ -48,7 +48,7 @@ _This section outlines my thought process for solving the problem._
 
 ### Step 2: Clean the Text and Extract Words
 
-2a. **Clean the Text** (Remove Punctuation): We use [`REGEXP_REPLACE()`](https://www.datacamp.com/doc/mysql/mysql-regexp-replace) to clean up the text data in the contents column by removing punctuation marks, as these can interfere with word counting.
+2a. **Clean the Text** (Remove Punctuation): We use [`REGEXP_REPLACE()`](https://www.datacamp.com/doc/mysql/mysql-regexp-replace) to clean up the text data in the contents column by removing [punctuation marks](https://www.geeksforgeeks.org/mysql-regular-expressions-regexp/), as these can interfere with word counting.
 
 2b. **Format into a JSON Array**: Since SQL does not have a direct function to split a string into words, we can use [`REPLACE()`](https://www.datacamp.com/tutorial/sql-replace) to replace spaces with commas to format the text into a JSON array and use `CONCAT()` to wrap the result into a valid JSON array
 
