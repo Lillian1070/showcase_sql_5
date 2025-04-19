@@ -48,11 +48,11 @@ _This section outlines my thought process for solving the problem._
 
 ### Step 2: Clean the Text and Extract Words
 
-2-1. **Clean the Text** (Remove Punctuation): We use [`REGEXP_REPLACE()`](https://www.datacamp.com/doc/mysql/mysql-regexp-replace) to clean up the text data in the contents column by removing punctuation marks, as these can interfere with word counting.
+1) **Clean the Text** (Remove Punctuation): We use [`REGEXP_REPLACE()`](https://www.datacamp.com/doc/mysql/mysql-regexp-replace) to clean up the text data in the contents column by removing punctuation marks, as these can interfere with word counting.
 
-2-2. **Format into a JSON Array**: Since SQL does not have a direct function to split a string into words, we can use [`REPLACE()`](https://www.datacamp.com/tutorial/sql-replace) to replace spaces with commas to format the text into a JSON array and use `CONCAT()` to wrap the result into a valid JSON array
+2) **Format into a JSON Array**: Since SQL does not have a direct function to split a string into words, we can use [`REPLACE()`](https://www.datacamp.com/tutorial/sql-replace) to replace spaces with commas to format the text into a JSON array and use `CONCAT()` to wrap the result into a valid JSON array
 
-2-3. **Split Using `JSON_TABLE`**: After creating the JSON array, we use the [`JSON_TABLE()`](https://docs.oracle.com/en/database/oracle/oracle-database/19/sqlrf/JSON_TABLE.html) function to extract each word into separate rows (aka. create a table-like structure from a JSON array of words).
+3) **Split Using `JSON_TABLE`**: After creating the JSON array, we use the [`JSON_TABLE()`](https://docs.oracle.com/en/database/oracle/oracle-database/19/sqlrf/JSON_TABLE.html) function to extract each word into separate rows (aka. create a table-like structure from a JSON array of words).
 
 ```sql
 JSON_TABLE(
@@ -68,11 +68,11 @@ JSON_TABLE(
 
 ### Step 3: Aggregate and Sort Word Frequencies
 
-3-1. **Normalize Words into Lowercase**: To avoid case-sensitive mismatches (e.g., "Market" and "market" should be counted as the same word), we use the `LOWER()` function to convert all words to lowercase.
+1) **Normalize Words into Lowercase**: To avoid case-sensitive mismatches (e.g., "Market" and "market" should be counted as the same word), we use the `LOWER()` function to convert all words to lowercase.
 
-3-2. **Group and Count Occurrences**: We group the words by their lowercase versions (using `GROUP BY LOWER(t.word)`) and count how many times each word appears using `COUNT(*)`.
+2) **Group and Count Occurrences**: We group the words by their lowercase versions (using `GROUP BY LOWER(t.word)`) and count how many times each word appears using `COUNT(*)`.
 
-3-3. **Sort the Result**: Finally, we order the results by the frequency of occurrences in descending order, so the most common words appear first.
+3) **Sort the Result**: Finally, we order the results by the frequency of occurrences in descending order, so the most common words appear first.
 
 ```sql
 SELECT 
