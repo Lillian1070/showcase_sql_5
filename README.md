@@ -98,3 +98,5 @@ _Showing top 10 rows here._
 
 - **Performance Optimization**: For larger datasets, optimize the query by using alternative methods for splitting text, such as preprocessing the text outside of SQL before querying.
 
+
+_💬 I’d love to hear your thoughts! If you have any suggestions or questions, feel free to connect with me._
