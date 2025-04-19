@@ -38,21 +38,23 @@ Find the number of times each word appears in the `contents` column across all r
 
 _This section outlines my thought process for solving the problem._
 
+
 ### Step 1: Identify Required Data
 
 - Extract the contents field from the `google_file_store` table.
 - Clean and process the text data (remove punctuation, replace spaces, convert to lowercase).
 - Split the `contents` into individual words.
 
+
 ### Step 2: Clean the Text and Extract Words
 
-1. **Clean the Text** (Remove Punctuation): We use `REGEXP_REPLACE()` to clean up the text data in the contents column by removing punctuation marks, as these can interfere with word counting.
+1. **Clean the Text** (Remove Punctuation): We use [`REGEXP_REPLACE()`](https://www.datacamp.com/doc/mysql/mysql-regexp-replace) to clean up the text data in the contents column by removing punctuation marks, as these can interfere with word counting.
 
 2. **Format into a JSON Array**: Since SQL does not have a direct function to split a string into words, we can use `REPLACE()` to replace spaces with commas to format the text into a JSON array and use `CONCAT()` to wrap the result into a valid JSON array
 
 3. **Split Using `JSON_TABLE`**: After creating the JSON array, we use the `JSON_TABLE()` function to extract each word into separate rows (aka. create a table-like structure from a JSON array of words).
 
-```
+```sql
 JSON_TABLE(
     CONCAT(
         '["',
@@ -63,7 +65,8 @@ JSON_TABLE(
 )
 ```
 
-### Step 3: xxxx - SELECT, FROM, JOIN, GROUP BY, ORDER BY 
+
+### Step 3: Aggregate and Sort Word Frequencies
 
 1. **Normalize Words into Lowercase**: To avoid case-sensitive mismatches (e.g., "Market" and "market" should be counted as the same word), we use the `LOWER()` function to convert all words to lowercase.
 
@@ -71,7 +74,7 @@ JSON_TABLE(
 
 3. **Sort the Result**: Finally, we order the results by the frequency of occurrences in descending order, so the most common words appear first.
 
-```
+```sql
 SELECT 
     LOWER(t.word) AS word,
     COUNT(*) AS occurrences
