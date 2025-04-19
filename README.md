@@ -2,12 +2,13 @@
 
 Practice from [StrataScratch](https://platform.stratascratch.com/coding/9817-find-the-number-of-times-each-word-appears-in-drafts?code_type=3). 
 
-- Objective: This query counts how many times each word appears in the `contents` field of the `google_file_store` table.
-- Practice Purpose: Self-learning and reinforcement of SQL data cleaning, aggregation, joins, subqueries, and window functions.
-- Outline: 
-    - Practice (practice problem and query output)
-    - Solution (step-by-step explanation)
-    - Future Enhancements
+- **Objective**: This query counts how many times each word appears in the `contents` field of the `google_file_store` table.
+- **Practice Purpose**: Self-learning and reinforcement of SQL data cleaning, aggregation, joins, subqueries, and window functions.
+- **Outline**: 
+    - **Practice** (practice problem and query output)
+    - **Solution** (step-by-step explanation)
+    - **Future Enhancements**
+
 
 ## Practice 
 
