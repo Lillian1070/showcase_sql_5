@@ -1,6 +1,6 @@
 # [SQL] Counting Word Occurrences in Drafts
 
-Practice from [StrataScratch](https://platform.stratascratch.com/coding/9817-find-the-number-of-times-each-word-appears-in-drafts?code_type=3). 
+This is a practice from [StrataScratch](https://platform.stratascratch.com/coding/9817-find-the-number-of-times-each-word-appears-in-drafts?code_type=3). 
 
 - **Objective**: This query counts how many times each word appears in the `contents` field of the `google_file_store` table.
 - **Practice Purpose**: Self-learning and reinforcement of SQL techniques such as data cleaning, aggregation, joins, subqueries, and window functions.
