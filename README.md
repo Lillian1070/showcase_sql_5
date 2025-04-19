@@ -24,6 +24,8 @@ Find the number of times each word appears in the `contents` column across all r
 |  the    |	     4      |
 
 
+- **SQL Syntax**
+
 ```sql
 SELECT 
     LOWER(jt.word) AS word,
