@@ -38,17 +38,47 @@ Find the number of times each word appears in the `contents` column across all r
 
 _This section outlines my thought process for solving the problem._
 
-1. **Clean the Text** (Remove Punctuation): We need to clean up the text data in the contents column by removing punctuation marks, as these can interfere with word counting.
+### Step 1: Identify Required Data
 
-2. **Format into a JSON Array**: Since SQL does not have a direct function to split a string into words, we can manually create a JSON array by replacing spaces with commas and enclosing each word in quotes.
+- Extract the contents field from the `google_file_store` table.
+- Clean and process the text data (remove punctuation, replace spaces, convert to lowercase).
+- Split the `contents` into individual words.
 
-3. **Split Using JSON_TABLE**: After creating the JSON array, we use the JSON_TABLE function to extract each word into separate rows.
+### Step 2: Clean the Text and Extract Words
 
-4. **Normalize**: We normalize the words by converting them to lowercase to avoid case-sensitive mismatches (e.g., "Market" and "market" should be counted as the same word).
+1. **Clean the Text** (Remove Punctuation): We use `REGEXP_REPLACE()` to clean up the text data in the contents column by removing punctuation marks, as these can interfere with word counting.
 
-5. **Group and Count Occurrences**: We group the words by their lowercase version and count how many times each word appears.
+2. **Format into a JSON Array**: Since SQL does not have a direct function to split a string into words, we can use `REPLACE()` to replace spaces with commas to format the text into a JSON array and use `CONCAT()` to wrap the result into a valid JSON array
 
-6. **Sort the Result**: Finally, we order the results by the frequency of occurrences in descending order, so the most common words appear first.
+3. **Split Using `JSON_TABLE`**: After creating the JSON array, we use the `JSON_TABLE()` function to extract each word into separate rows (aka. create a table-like structure from a JSON array of words).
+
+```
+JSON_TABLE(
+    CONCAT(
+        '["',
+        REPLACE(REGEXP_REPLACE(g.contents, '[[:punct:]]', ''), ' ', '","'),
+        '"]'
+    ),
+    '$[*]' COLUMNS (word VARCHAR(200) PATH '$')
+)
+```
+
+### Step 3: xxxx - SELECT, FROM, JOIN, GROUP BY, ORDER BY 
+
+1. **Normalize Words into Lowercase**: To avoid case-sensitive mismatches (e.g., "Market" and "market" should be counted as the same word), we use the `LOWER()` function to convert all words to lowercase.
+
+2. **Group and Count Occurrences**: We group the words by their lowercase versions (using `GROUP BY LOWER(t.word)`) and count how many times each word appears using `COUNT(*)`.
+
+3. **Sort the Result**: Finally, we order the results by the frequency of occurrences in descending order, so the most common words appear first.
+
+```
+SELECT 
+    LOWER(t.word) AS word,
+    COUNT(*) AS occurrences
+FROM [table]
+GROUP BY LOWER(t.word)
+ORDER BY occurrences DESC;
+```
 
 
 ### Final Syntax and Output using MySQL
@@ -57,7 +87,7 @@ _This section outlines my thought process for solving the problem._
 
 ```sql
 SELECT 
-    LOWER(jt.word) AS word,
+    LOWER(t.word) AS word,
     COUNT(*) AS occurrences
 FROM google_file_store g
 JOIN JSON_TABLE(
@@ -67,8 +97,8 @@ JOIN JSON_TABLE(
         '"]'
     ),
     '$[*]' COLUMNS (word VARCHAR(200) PATH '$')
-) jt
-GROUP BY LOWER(jt.word)
+) t
+GROUP BY LOWER(t.word)
 ORDER BY occurrences DESC;
 ```
 
