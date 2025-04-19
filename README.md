@@ -1,4 +1,4 @@
-# Count Occurrences Of Words In Drafts
+# [SQL] Count Occurrences Of Words In Drafts
 
 Practice from [StrataScratch](https://platform.stratascratch.com/coding/9817-find-the-number-of-times-each-word-appears-in-drafts?code_type=3). 
 
