@@ -1,10 +1,10 @@
 # Count Occurrences Of Words In Drafts
 
-Practice from [StrataScratch](https://platform.stratascratch.com/coding/9817-find-the-number-of-times-each-word-appears-in-drafts?code_type=3): 
+Practice from [StrataScratch](https://platform.stratascratch.com/coding/9817-find-the-number-of-times-each-word-appears-in-drafts?code_type=3). 
 
 Find the number of times each word appears in the `contents` column across all rows in the `drafts` dataset. Output two columns: `word` and `occurrences`.
 
-- **Dataset**: `google_file_store`
+- **Table**: `google_file_store`
 
 |   filename   |   contents   |
 |--------------|--------------|
