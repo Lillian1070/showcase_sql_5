@@ -7,7 +7,7 @@ Practice from [StrataScratch](https://platform.stratascratch.com/coding/9817-fin
 - **Outline**: 
     - **Practice** (practice problem and query output)
     - **Solution** (step-by-step explanation)
-    - **Future Enhancements**
+    - **Future Enhancements** (if any)
 
 
 ## Practice 
@@ -38,18 +38,17 @@ Find the number of times each word appears in the `contents` column across all r
 
 _This section outlines my thought process for solving the problem._
 
+1. **Clean the Text** (Remove Punctuation): We need to clean up the text data in the contents column by removing punctuation marks, as these can interfere with word counting.
 
-Clean the text (remove punctuation)
+2. **Format into a JSON Array**: Since SQL does not have a direct function to split a string into words, we can manually create a JSON array by replacing spaces with commas and enclosing each word in quotes.
 
-Format it into a JSON array
+3. **Split Using JSON_TABLE**: After creating the JSON array, we use the JSON_TABLE function to extract each word into separate rows.
 
-Split using JSON_TABLE
+4. **Normalize**: We normalize the words by converting them to lowercase to avoid case-sensitive mismatches (e.g., "Market" and "market" should be counted as the same word).
 
-Normalize (convert to lowercase)
+5. **Group and Count Occurrences**: We group the words by their lowercase version and count how many times each word appears.
 
-Group and count the occurrences
-
-Sort the result
+6. **Sort the Result**: Finally, we order the results by the frequency of occurrences in descending order, so the most common words appear first.
 
 
 ### Final Syntax and Output using MySQL
@@ -89,3 +88,13 @@ _Showing top 10 rows here._
 |  which  |	     3      |
 |  would  |	     3      |
 |  make   |	     3      |
+
+
+## Future Enhancements
+
+- **Handling Stop Words**: We can extend this query by excluding common "stop words" (like "a", "and", "the", etc.) to focus on more meaningful words.
+
+- **Additional Data Processing**: Consider handling word stemming or lemmatization to treat similar words (e.g., "running" and "run") as the same.
+
+- **Performance Optimization**: For larger datasets, optimize the query by using alternative methods for splitting text, such as preprocessing the text outside of SQL before querying.
+
