@@ -1,16 +1,16 @@
-# [SQL] Count Occurrences Of Words In Drafts
+# [SQL] Counting Word Occurrences in Drafts
 
 Practice from [StrataScratch](https://platform.stratascratch.com/coding/9817-find-the-number-of-times-each-word-appears-in-drafts?code_type=3). 
 
 - **Objective**: This query counts how many times each word appears in the `contents` field of the `google_file_store` table.
 - **Practice Purpose**: Self-learning and reinforcement of SQL techniques such as data cleaning, aggregation, joins, subqueries, and window functions.
 - **Outline**: 
-    - **Practice** (practice problem and query output)
-    - **Solution** (step-by-step explanation)
-    - **Future Enhancements** (if any)
+    - [**Practice**](#section-1) (practice problem and query output)
+    - [**Solution**](#section-2) (step-by-step explanation)
+    - [**Future Enhancements**](#section-3) (if any)
 
 
-## Practice 
+## <a name="section-1"></a>🧪 Practice 
 
 Find the number of times each word appears in the `contents` column across all rows in the `drafts` dataset. Output two columns: `word` and `occurrences`.
 
@@ -34,7 +34,7 @@ Find the number of times each word appears in the `contents` column across all r
 |  the    |	     4      |
 
 
-## Solution
+## <a name="section-2"></a>🧠 Solution
 
 _This section outlines my thought process for solving the problem._
 
@@ -90,7 +90,7 @@ _Showing top 10 rows here._
 |  make   |	     3      |
 
 
-## Future Enhancements
+## <a name="section-3"></a>🚀 Future Enhancements
 
 - **Handling Stop Words**: We can extend this query by excluding common "stop words" (like "a", "and", "the", etc.) to focus on more meaningful words.
 
