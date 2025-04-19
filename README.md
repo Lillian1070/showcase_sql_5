@@ -22,3 +22,21 @@ Find the number of times each word appears in the `contents` column across all r
 |investors|	     4      |
 |  and    |    	 4      |
 |  the    |	     4      |
+
+
+```sql
+SELECT 
+    LOWER(jt.word) AS word,
+    COUNT(*) AS occurrences
+FROM google_file_store g
+JOIN JSON_TABLE(
+    CONCAT(
+        '["',
+        REPLACE(REGEXP_REPLACE(g.contents, '[[:punct:]]', ''), ' ', '","'),
+        '"]'
+    ),
+    '$[*]' COLUMNS (word VARCHAR(200) PATH '$')
+) jt
+GROUP BY LOWER(jt.word)
+ORDER BY occurrences DESC;
+```
