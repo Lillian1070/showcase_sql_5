@@ -3,7 +3,7 @@
 Practice from [StrataScratch](https://platform.stratascratch.com/coding/9817-find-the-number-of-times-each-word-appears-in-drafts?code_type=3). 
 
 - **Objective**: This query counts how many times each word appears in the `contents` field of the `google_file_store` table.
-- **Practice Purpose**: Self-learning and reinforcement of SQL data cleaning, aggregation, joins, subqueries, and window functions.
+- **Practice Purpose**: Self-learning and reinforcement of SQL techniques such as data cleaning, aggregation, joins, subqueries, and window functions.
 - **Outline**: 
     - **Practice** (practice problem and query output)
     - **Solution** (step-by-step explanation)
@@ -54,7 +54,7 @@ Sort the result
 
 ### Final Syntax and Output using MySQL
 
-* **Syntax**
+***Syntax**
 
 ```sql
 SELECT 
@@ -73,7 +73,7 @@ GROUP BY LOWER(jt.word)
 ORDER BY occurrences DESC;
 ```
 
-* **Output**
+***Output**
 
 _Showing top 10 rows here._
 
