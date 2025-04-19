@@ -68,11 +68,11 @@ JSON_TABLE(
 
 ### Step 3: Aggregate and Sort Word Frequencies
 
-1) **Normalize Words into Lowercase**: To avoid case-sensitive mismatches (e.g., "Market" and "market" should be counted as the same word), we use the `LOWER()` function to convert all words to lowercase.
+3a. **Normalize Words into Lowercase**: To avoid case-sensitive mismatches (e.g., "Market" and "market" should be counted as the same word), we use the `LOWER()` function to convert all words to lowercase.
 
-2) **Group and Count Occurrences**: We group the words by their lowercase versions (using `GROUP BY LOWER(t.word)`) and count how many times each word appears using `COUNT(*)`.
+3b. **Group and Count Occurrences**: We group the words by their lowercase versions (using `GROUP BY LOWER(t.word)`) and count how many times each word appears using `COUNT(*)`.
 
-3) **Sort the Result**: Finally, we order the results by the frequency of occurrences in descending order, so the most common words appear first.
+3c. **Sort the Result**: Finally, we order the results by the frequency of occurrences in descending order, so the most common words appear first.
 
 ```sql
 SELECT 
