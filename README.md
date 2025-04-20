@@ -50,7 +50,7 @@ _This section outlines my thought process for solving the problem._
 
 2a-1. **Clean the Text** (Remove Punctuation): Use [`REGEXP_REPLACE()`](https://neon.tech/docs/functions/regexp_replace) to clean up the text data in the contents column by removing punctuation marks, as these can interfere with word counting.
 
-- `'[^\w\s]'` is the [regex](https://learn.microsoft.com/en-us/sql/relational-databases/regular-expressions/overview?view=azuresqldb-current) pattern:
+- `'[^\w\s]'` is the [regex](https://www.postgresql.org/docs/current/functions-matching.html) pattern:
     - `^` (inside the square brackets) means "not".
     - `\w` matches any word character → letters (a-z, A-Z), digits (0-9), and underscore (_).
     - `\s` matches whitespace → spaces, tabs, newlines.
@@ -70,7 +70,7 @@ FROM google_file_store
 
 2b-1. **Split the Text and Format into Arrays**: Use [`STRING_TO_ARRAY()`](https://www.stratascratch.com/blog/string-and-array-functions-in-sql-for-data-science/) to split the `clean_content` string into an array of words using a space `' '` as the delimiter.
 
-2b-2. **Expand Arrays into Rows**: Use [`UNNEST()`](https://count.co/sql-resources/bigquery-standard-sql/unnest) to expand arrays into individual rows.
+2b-2. **Expand Arrays into Rows**: Use [`UNNEST()`](https://www.postgresql.org/docs/9.2/functions-array.html) to expand arrays into individual rows.
 
 ```sql
 # word_tab
