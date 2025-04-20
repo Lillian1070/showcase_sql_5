@@ -48,7 +48,7 @@ _This section outlines my thought process for solving the problem._
 
 ### Step 2a: Clean the Text into `content_tab`
 
-2a-1. **Clean the Text** (Remove Punctuation): Use [`REGEXP_REPLACE()`](https://www.datacamp.com/doc/mysql/mysql-regexp-replace) to clean up the text data in the contents column by removing punctuation marks, as these can interfere with word counting.
+2a-1. **Clean the Text** (Remove Punctuation): Use [`REGEXP_REPLACE()`](https://neon.tech/docs/functions/regexp_replace) to clean up the text data in the contents column by removing punctuation marks, as these can interfere with word counting.
 
 - `'[^\w\s]'` is the [regex](https://learn.microsoft.com/en-us/sql/relational-databases/regular-expressions/overview?view=azuresqldb-current) pattern:
     - `^` (inside the square brackets) means "not".
@@ -96,7 +96,7 @@ ORDER BY occurrences DESC;
 ```
 
 
-### Final Syntax and Output using MySQL
+### Final Syntax and Output using PostgreSQL
 
 ***Syntax**
 
@@ -139,7 +139,7 @@ _Showing top 10 rows here._
 |  make   |	     3      |
 
 
-## <a name="section-3"></a>🛠️ Query Optimization using MySQL
+## <a name="section-3"></a>🛠️ Query Optimization using PostgreSQL
 
 _Note: This section is updated on 04/20/2025._
 
