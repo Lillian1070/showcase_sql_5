@@ -8,7 +8,7 @@ _This SQL practice is based on a problem from [StrataScratch](https://platform.s
     - [**Practice**](#section-1) (practice problem and query output)
     - [**Solution**](#section-2) (step-by-step explanation)
     - [**Query Optimization**](#section-3) (refinement for efficiency and readability)
-    - [**Future Enhancements**](#section-4) (if any)
+    - [**Future Enhancements**](#section-4) 
 
 
 ## <a name="section-1"></a>🧪 Practice 
