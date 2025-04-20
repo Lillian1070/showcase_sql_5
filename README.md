@@ -143,7 +143,7 @@ _Showing top 10 rows here._
 
 _Note: This section is updated on 04/20/2025._
 
-Upon review, I realized that the temp tables can be merged into inline subqueries, removing the need for a `WITH` clause. This makes the query more concise and avoids the creation of temporary tables.
+Upon review, I realized that the temp tables can be merged into inline subqueries, excluding the need for a `WITH` clause. This makes the query more concise and avoids the creation of temporary tables.
 
 ```sql
 SELECT 
