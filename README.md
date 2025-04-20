@@ -7,7 +7,8 @@ _This SQL practice is based on a problem from [StrataScratch](https://platform.s
 - **Outline**: 
     - [**Practice**](#section-1) (practice problem and query output)
     - [**Solution**](#section-2) (step-by-step explanation)
-    - [**Future Enhancements**](#section-3) (if any)
+    - [**Query Optimization**](#section-3) (refinement for efficiency and readability)
+    - [**Future Enhancements**](#section-4) (if any)
 
 
 ## <a name="section-1"></a>🧪 Practice 
@@ -41,45 +42,60 @@ _This section outlines my thought process for solving the problem._
 
 ### Step 1: Identify Required Data
 
-- Extract the contents field from the `google_file_store` table.
-- Clean and process the text data (remove punctuation, replace spaces, convert to lowercase).
-- Split the `contents` into individual words.
+- Clean contents: Extract the `contents` field and clean the text data (remove punctuation, convert to lowercase).
+- A list of individual words: Split the cleaned `contents` into separate words.
 
 
-### Step 2: Clean the Text and Extract Words
+### Step 2a: Clean the Text into `content_tab`
 
-2a. **Clean the Text** (Remove Punctuation): We use [`REGEXP_REPLACE()`](https://www.datacamp.com/doc/mysql/mysql-regexp-replace) to clean up the text data in the contents column by removing [punctuation marks](https://www.geeksforgeeks.org/mysql-regular-expressions-regexp/), as these can interfere with word counting.
+2a-1. **Clean the Text** (Remove Punctuation): Use [`REGEXP_REPLACE()`](https://www.datacamp.com/doc/mysql/mysql-regexp-replace) to clean up the text data in the contents column by removing punctuation marks, as these can interfere with word counting.
 
-2b. **Format into a JSON Array**: Since SQL does not have a direct function to split a string into words, we can use [`REPLACE()`](https://www.datacamp.com/tutorial/sql-replace) to replace spaces with commas to format the text into a JSON array and use `CONCAT()` to wrap the result into a valid JSON array
+    - `'[^\w\s]'` is the [regex](https://learn.microsoft.com/en-us/sql/relational-databases/regular-expressions/overview?view=azuresqldb-current) pattern:
 
-2c. **Split Using `JSON_TABLE`**: After creating the JSON array, we use the [`JSON_TABLE()`](https://docs.oracle.com/en/database/oracle/oracle-database/19/sqlrf/JSON_TABLE.html) function to extract each word into separate rows (aka. create a table-like structure from a JSON array of words).
+        - `^` (inside the square brackets) means "not".
+
+        - `\w` matches any word character → letters (a-z, A-Z), digits (0-9), and underscore (_).
+
+        - `\s` matches whitespace → spaces, tabs, newlines.
+
+        - `[^\w\s]` matches anything that is **NOT** a letter, digit, underscore, or space — in other words, punctuation like . , ; : ! ? ( ) " ' - etc.
+
+
+2a-2. **Normalize Words into Lowercase**: To avoid case-sensitive mismatches (e.g., "Market" and "market" should be counted as the same word), use the `LOWER()` function to convert all words to lowercase.
 
 ```sql
-JSON_TABLE(
-    CONCAT(
-        '["',
-        REPLACE(REGEXP_REPLACE(g.contents, '[[:punct:]]', ''), ' ', '","'),
-        '"]'
-    ),
-    '$[*]' COLUMNS (word VARCHAR(200) PATH '$')
-)
+# content_tab
+SELECT 
+    LOWER(REGEXP_REPLACE(contents, '[^\w\s]', '', 'g')) AS clean_content
+FROM google_file_store
+```
+
+### Step 2b: Extract Words into `word_tab`
+
+2b-1. **Split the Text and Format into Arrays**: Use [`STRING_TO_ARRAY()`](https://www.stratascratch.com/blog/string-and-array-functions-in-sql-for-data-science/) to split the `clean_content` string into an array of words using a space `' '` as the delimiter.
+
+2b-2. **Expand Arrays into Rows**: Use [`UNNEST()`](https://count.co/sql-resources/bigquery-standard-sql/unnest) to expand arrays into individual rows.
+
+```sql
+# word_tab
+SELECT 
+    UNNEST(STRING_TO_ARRAY(clean_content, ' ')) AS word
+FROM content_tab
 ```
 
 
 ### Step 3: Aggregate and Sort Word Frequencies
 
-3a. **Normalize Words into Lowercase**: To avoid case-sensitive mismatches (e.g., "Market" and "market" should be counted as the same word), we use the `LOWER()` function to convert all words to lowercase.
+3a. **Group and Count Occurrences**: Group the words and count how many times each word appears using `COUNT()`.
 
-3b. **Group and Count Occurrences**: We group the words by their lowercase versions (using `GROUP BY LOWER(t.word)`) and count how many times each word appears using `COUNT(*)`.
-
-3c. **Sort the Result**: Finally, we order the results by the frequency of occurrences in descending order, so the most common words appear first.
+3b. **Sort the Result**: Order the results by frequency in descending order so that the most common words appear first.
 
 ```sql
 SELECT 
-    LOWER(t.word) AS word,
-    COUNT(*) AS occurrences
-FROM [table]
-GROUP BY LOWER(t.word)
+    DISTINCT word,
+    COUNT(word) AS occurrences
+FROM word_tab
+GROUP BY word
 ORDER BY occurrences DESC;
 ```
 
@@ -89,19 +105,23 @@ ORDER BY occurrences DESC;
 ***Syntax**
 
 ```sql
-SELECT 
-    LOWER(t.word) AS word,
-    COUNT(*) AS occurrences
-FROM google_file_store g
-JOIN JSON_TABLE(
-    CONCAT(
-        '["',
-        REPLACE(REGEXP_REPLACE(g.contents, '[[:punct:]]', ''), ' ', '","'),
-        '"]'
+WITH 
+    content_tab AS (
+        SELECT 
+            LOWER(REGEXP_REPLACE(contents, '[^\w\s]', '', 'g')) AS clean_content
+        FROM google_file_store
     ),
-    '$[*]' COLUMNS (word VARCHAR(200) PATH '$')
-) t
-GROUP BY LOWER(t.word)
+    word_tab AS (
+        SELECT 
+            UNNEST(STRING_TO_ARRAY(clean_content, ' ')) AS word
+        FROM content_tab
+    )
+    
+SELECT 
+    DISTINCT word,
+    COUNT(word) AS occurrences
+FROM word_tab
+GROUP BY word
 ORDER BY occurrences DESC;
 ```
 
@@ -123,7 +143,27 @@ _Showing top 10 rows here._
 |  make   |	     3      |
 
 
-## <a name="section-3"></a>🚀 Future Enhancements
+## <a name="section-3"></a>🛠️ Query Optimization using MySQL
+
+_Note: This section is updated on 04/20/2025._
+
+Upon review, I realized that the temp tables can be merged into inline subqueries, removing the need for a `WITH` clause. This makes the query more concise and avoids the creation of temporary tables.
+
+```sql
+SELECT 
+    word,
+    COUNT(*) AS occurrences
+FROM (
+    SELECT 
+        UNNEST(STRING_TO_ARRAY(LOWER(REGEXP_REPLACE(contents, '[^\w\s]', '', 'g')), ' ')) AS word
+    FROM google_file_store
+) 
+GROUP BY word
+ORDER BY occurrences DESC;
+```
+
+
+## <a name="section-4"></a>🚀 Future Enhancements
 
 - **Handling Stop Words**: We can extend this query by excluding common "stop words" (like "a", "and", "the", etc.) to focus on more meaningful words.
 
