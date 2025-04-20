@@ -50,15 +50,11 @@ _This section outlines my thought process for solving the problem._
 
 2a-1. **Clean the Text** (Remove Punctuation): Use [`REGEXP_REPLACE()`](https://www.datacamp.com/doc/mysql/mysql-regexp-replace) to clean up the text data in the contents column by removing punctuation marks, as these can interfere with word counting.
 
-    - `'[^\w\s]'` is the [regex](https://learn.microsoft.com/en-us/sql/relational-databases/regular-expressions/overview?view=azuresqldb-current) pattern:
-
-        - `^` (inside the square brackets) means "not".
-
-        - `\w` matches any word character → letters (a-z, A-Z), digits (0-9), and underscore (_).
-
-        - `\s` matches whitespace → spaces, tabs, newlines.
-
-        - `[^\w\s]` matches anything that is **NOT** a letter, digit, underscore, or space — in other words, punctuation like . , ; : ! ? ( ) " ' - etc.
+- `'[^\w\s]'` is the [regex](https://learn.microsoft.com/en-us/sql/relational-databases/regular-expressions/overview?view=azuresqldb-current) pattern:
+    - `^` (inside the square brackets) means "not".
+    - `\w` matches any word character → letters (a-z, A-Z), digits (0-9), and underscore (_).
+    - `\s` matches whitespace → spaces, tabs, newlines.
+    - `[^\w\s]` matches anything that is **NOT** a letter, digit, underscore, or space — in other words, punctuation like . , ; : ! ? ( ) " ' - etc.
 
 
 2a-2. **Normalize Words into Lowercase**: To avoid case-sensitive mismatches (e.g., "Market" and "market" should be counted as the same word), use the `LOWER()` function to convert all words to lowercase.
